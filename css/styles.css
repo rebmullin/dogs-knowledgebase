@@ -1,0 +1,129 @@
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Lato", sans-serif;
+}
+
+.loading-error,
+.page-title {
+  text-align: center;
+  padding: 15px;
+}
+
+.search-wrapper,
+.search {
+  width: 100%;
+  height: 50px;
+}
+
+.search {
+  padding: 10px;
+  border: 0;
+  border-bottom: 1px solid #eee;
+}
+
+@media only screen and (min-width: 768px) {
+  .dog-display {
+    display: flex;
+    flex: 1 1 50%;
+  }
+}
+
+.dog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  flex: 1 1 50%;
+}
+
+.dog-list li {
+  padding: 10px 0;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.dog-list button {
+  background-color: #eee;
+  padding: 12px;
+  border-radius: 5px;
+  border: 1px solid #eee;
+  color: #fff;
+  display: block;
+  margin: 10px 0;
+  text-shadow: 1px 1px 1px #666666;
+  min-width: 200px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.dog-list button:hover {
+  cursor: pointer;
+  box-shadow: 1px 1px 1px #ddd;
+}
+
+.dog-detail {
+  flex: 1 1 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-wrapper {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  top: 0;
+  display: none;
+}
+
+.modal-wrapper--show {
+  display: grid;
+}
+
+.modal {
+  background-color: #fff;
+  max-width: 500px;
+  margin: auto;
+  padding: 15px;
+  width: 100%;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  right: 20px;
+  color: #777;
+  border: 0;
+  cursor: pointer;
+}
+
+.modal-close::after {
+  content: "X";
+  font-size: 18px;
+}
+
+.modal-detail-wrapper {
+  display: grid;
+}
+
+.modal-detail__link,
+.modal-detail__name {
+  text-align: center;
+}
+
+.modal-detail__image {
+  margin: auto;
+  border: 5px solid #ccc;
+}
+
+.loading {
+  text-align: center;
+}
