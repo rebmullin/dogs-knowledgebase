@@ -1,6 +1,6 @@
 let dogs = (function() {
-  const clientId = config.CLIENT_ID;
-  const clientSecret = config.CLIENT_SECRET;
+  const clientId = config ? config.CLIENT_ID : null;
+  const clientSecret = config ? config.CLIENT_SECRET : null;
 
   const apiUrl = "https://api.petfinder.com/v2/animals?breed=Bichon Frise";
   const tokenUrl = "https://api.petfinder.com/v2/oauth2/token";
