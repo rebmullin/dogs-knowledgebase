@@ -138,7 +138,7 @@ let dogs = (function(configSettings) {
 
     $modalWrapper.velocity(
       { opacity: 1, visibility: "visible" },
-      { duration: 1000 },
+      { duration: 500 },
     );
   }
 
@@ -159,7 +159,7 @@ let dogs = (function(configSettings) {
     const $modalWrapper = $(".modal-wrapper");
     $modalWrapper.velocity(
       { opacity: 0, visibility: "hidden" },
-      { duration: 1000 },
+      { duration: 250 },
     );
     $modalWrapper.empty();
   }
