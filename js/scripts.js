@@ -20,22 +20,33 @@ let dogs = (function(configSettings) {
   }
 
   function getToken() {
+    if (Cookies.get("token")) {
+      return Promise.resolve(Cookies.get("token"));
+    }
+
     return $.ajax({
       url: tokenUrl,
       type: "POST",
-      // I am guessing this is bad to run if we already have a token, right?
-      // What is the best way to handle storing this token? cookie? localStorage??
-      // so we don't have to keep fetching this (unless it's needed - it's expired)??
       data: `grant_type=client_credentials&client_id=${clientId}&client_secret=${clientSecret}`,
-      success: token => token,
+      success: response => {
+        const { access_token: token } = response;
+        Cookies.set("token", token);
+
+        // shouldn't this return a string? it seems to return an object :/
+        // what am I missing?
+        return token;
+      },
       error: error => {
         console.error(error);
         $("body").append(
-          `<div class="loading-error"><p>oh no!!</p><p>${
-            error.responseJSON.detail
-          }</p></div>`,
+          `<div class="loading-error"><p>oh no!!!!!</p><p>${error &&
+            error.responseJON &&
+            error.responseJSON.detail}</p></div>`,
         );
+        Cookies.remove("token");
+
         removeLoadingMessage();
+        // getToken();
       },
     });
   }
@@ -43,15 +54,21 @@ let dogs = (function(configSettings) {
   function loadDogs() {
     showLoadingMessage();
 
-    // Also I am guessing this is bad to run if we already have a token to ask for another one??. how to this - handle storing token? cookie? localStorage??
-    getToken().then(data => {
-      const { access_token: token } = data;
+    getToken().then(token => {
       $.ajax({
         url: apiUrl,
         type: "GET",
+        crossDomain: true,
         beforeSend: xhr => {
-          xhr.setRequestHeader("Authorization", `Bearer ${token}`);
+          let bearerToken = token;
+
+          if (typeof token === "object") {
+            bearerToken = token.access_token;
+          }
+
+          xhr.setRequestHeader("Authorization", `Bearer ${bearerToken}`);
         },
+
         success: data => {
           const { animals } = data;
           animals.forEach((animal, index) => {
@@ -64,7 +81,12 @@ let dogs = (function(configSettings) {
           });
         },
         error: error => {
-          console.log(error);
+          console.error(error);
+          $("body").append(
+            `<div class="loading-error"><p>oh no!!</p><p>${
+              error.statusText
+            }</p></div>`,
+          );
         },
         complete: function() {
           removeLoadingMessage();
@@ -146,4 +168,10 @@ let dogs = (function(configSettings) {
   };
 })(configSettings);
 
-dogs.loadDogs();
+if (!configSettings) {
+  $("body").append(
+    `<div class="loading-error"><p>oh no!!</p><p>Sorry, you do not have access to this API!</p></div>`,
+  );
+} else {
+  dogs.loadDogs();
+}
