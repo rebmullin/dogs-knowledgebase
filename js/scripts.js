@@ -133,11 +133,14 @@ let dogs = (function(configSettings) {
       } here!</a>`,
     );
 
-    $modalWrapper.addClass("modal-wrapper--show");
+    $modalWrapper.velocity(
+      { opacity: 1, visibility: "visible" },
+      { duration: 1000 },
+    );
   }
 
   $(window).on("keydown", function(e) {
-    if (e.key === "Escape" && $modalWrapper.hasClass("modal-wrapper--show")) {
+    if (e.key === "Escape" && $modalWrapper.hasClass("modal-wrapper")) {
       hideModal();
     }
   });
@@ -151,7 +154,10 @@ let dogs = (function(configSettings) {
 
   function hideModal() {
     const $modalWrapper = $(".modal-wrapper");
-    $modalWrapper.removeClass("modal-wrapper--show");
+    $modalWrapper.velocity(
+      { opacity: 0, visibility: "hidden" },
+      { duration: 1000 },
+    );
     $modalWrapper.empty();
   }
 
