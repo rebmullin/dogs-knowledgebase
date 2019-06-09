@@ -1,4 +1,4 @@
-let dogs = (function() {
+let dogs = (function(config) {
   const clientId = config ? config.CLIENT_ID : null;
   const clientSecret = config ? config.CLIENT_SECRET : null;
 
@@ -138,6 +138,6 @@ let dogs = (function() {
   return {
     loadDogs: loadDogs,
   };
-})();
+})(config);
 
 dogs.loadDogs();
