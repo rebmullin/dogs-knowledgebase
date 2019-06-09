@@ -30,7 +30,8 @@ let dogs = (function(configSettings) {
       data: `grant_type=client_credentials&client_id=${clientId}&client_secret=${clientSecret}`,
       success: response => {
         const { access_token: token } = response;
-        Cookies.set("token", token);
+        const nowPlusHour = 1 / 24; // expire cookie in an hour
+        Cookies.set("token", token, { expires: nowPlusHour });
 
         // shouldn't this return a string? it seems to return an object :/
         // what am I missing?
@@ -44,9 +45,7 @@ let dogs = (function(configSettings) {
             error.responseJSON.detail}</p></div>`,
         );
         Cookies.remove("token");
-
         removeLoadingMessage();
-        // getToken();
       },
     });
   }
@@ -87,7 +86,11 @@ let dogs = (function(configSettings) {
               error.statusText
             }</p></div>`,
           );
+          // remove old token
+          Cookies.remove("token");
+          getToken();
         },
+
         complete: function() {
           removeLoadingMessage();
         },
