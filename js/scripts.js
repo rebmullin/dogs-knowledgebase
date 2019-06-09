@@ -1,6 +1,10 @@
-let dogs = (function(config) {
-  const clientId = config ? config.CLIENT_ID : null;
-  const clientSecret = config ? config.CLIENT_SECRET : null;
+let configSettings = window.config || null;
+
+let dogs = (function(configSettings) {
+  const clientId = Boolean(configSettings) ? configSettings.CLIENT_ID : null;
+  const clientSecret = Boolean(configSettings)
+    ? configSettings.CLIENT_SECRET
+    : null;
 
   const apiUrl = "https://api.petfinder.com/v2/animals?breed=Bichon Frise";
   const tokenUrl = "https://api.petfinder.com/v2/oauth2/token";
@@ -95,9 +99,11 @@ let dogs = (function(config) {
       );
     }
 
-    $modalDetailWrapper.append(
-      `<p class="modal-detail__description">${item.description}</p>`,
-    );
+    if (item.description) {
+      $modalDetailWrapper.append(
+        `<p class="modal-detail__description">${item.description}</p>`,
+      );
+    }
 
     $modalDetailWrapper.append(
       `<a class="modal-detail__link" href="${item.url}">Find out more about ${
@@ -138,6 +144,6 @@ let dogs = (function(config) {
   return {
     loadDogs: loadDogs,
   };
-})(config);
+})(configSettings);
 
 dogs.loadDogs();
