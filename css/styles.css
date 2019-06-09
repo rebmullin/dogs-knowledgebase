@@ -81,11 +81,9 @@ body {
   width: 100%;
   background: rgba(0, 0, 0, 0.5);
   top: 0;
-  display: none;
-}
-
-.modal-wrapper--show {
   display: grid;
+  opacity: 0;
+  visibility: hidden;
 }
 
 .modal {
