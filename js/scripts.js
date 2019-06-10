@@ -9,14 +9,14 @@ let dogs = (function(configSettings) {
   const apiUrl = "https://api.petfinder.com/v2/animals?breed=Bichon Frise";
   const tokenUrl = "https://api.petfinder.com/v2/oauth2/token";
 
-  const $modalWrapper = $(".modal-wrapper");
-
   function showLoadingMessage() {
-    $("body").append('<p class="loading">Loading...</p>');
+    $("body").append(
+      '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',
+    );
   }
 
   function removeLoadingMessage() {
-    $("body .loading").remove();
+    $("body .spinner-border").remove();
   }
 
   function getToken() {
@@ -74,9 +74,9 @@ let dogs = (function(configSettings) {
             addDogItem(animal, index);
           });
 
-          $(".dog-list__item").on("click", function(e) {
+          $(".list-item-group").on("click", function(e) {
             const index = $(this).data("name");
-            showModal(animals[index]);
+            showModal(animals[index], index);
           });
         },
         error: error => {
@@ -98,77 +98,48 @@ let dogs = (function(configSettings) {
     });
   }
 
-  function showModal(item) {
-    $modalWrapper.append('<div class="modal"></div>');
-
-    const $modal = $(".modal");
-    $modal.append('<button class="modal-close"></button>');
-
-    const $modalCloseButton = $(".modal-close");
-
-    $modalCloseButton.on("click", hideModal);
+  function showModal(item, index) {
+    $(".modal").attr("id", `dog-${index}`);
 
     // Add the dog's details
-    $modal.append('<div class="modal-detail-wrapper"></div');
 
-    const $modalDetailWrapper = $(".modal-detail-wrapper");
-
-    $modalDetailWrapper.append(
-      `<h1 class="modal-detail__name">${item.name}</h1>`,
+    // modal header
+    const $modalHeader = $(".modal-header");
+    // Clear out title before adding anything again
+    $modalHeader.find(".modal-header__title").remove();
+    $modalHeader.prepend(
+      `<h4 class="class="modal-header__title text-center">${item.name}</h4>`,
     );
+
+    // modal body
+    const $modalBody = $(".modal-body");
+    // Clear out body before adding anything again
+    $modalBody.empty();
+
     if (item.photos.length) {
-      $modalDetailWrapper.append(
-        `<img class="modal-detail__image" src="${item.photos[0].medium}" alt="${
-          item.name
-        }" />`,
+      $modalBody.append(
+        `<img class="rounded mx-auto d-block p-3" src="${
+          item.photos[0].medium
+        }" alt="${item.name}" />`,
       );
     }
-
     if (item.description) {
-      $modalDetailWrapper.append(
-        `<p class="modal-detail__description">${item.description}</p>`,
-      );
+      $modalBody.append(`<p>${item.description}</p>`);
     }
 
-    $modalDetailWrapper.append(
-      `<a class="modal-detail__link" href="${item.url}">Find out more about ${
+    $modalBody.append(
+      `<a class="text-align" href="${item.url}">Find out more about ${
         item.name
       } here!</a>`,
     );
-
-    $modalWrapper.velocity(
-      { opacity: 1, visibility: "visible" },
-      { duration: 500 },
-    );
-  }
-
-  $(window).on("keydown", function(e) {
-    if (e.key === "Escape" && $modalWrapper.hasClass("modal-wrapper")) {
-      hideModal();
-    }
-  });
-
-  $modalWrapper.on("click", function(e) {
-    const target = e.target;
-    if (target === $(this)[0]) {
-      hideModal();
-    }
-  });
-
-  function hideModal() {
-    const $modalWrapper = $(".modal-wrapper");
-    $modalWrapper.velocity(
-      { opacity: 0, visibility: "hidden" },
-      { duration: 250 },
-    );
-    $modalWrapper.empty();
   }
 
   function addDogItem(item, index) {
-    $(".dog-list").append(
-      `<li class="dog-list__item" data-name="${index}"><button>${
+    $(".dog-display .list-group").append(
+      `<button data-toggle="modal" data-name="${index}"
+      data-target="#dog-${index}" class="list-item-group m-3 btn btn-primary">${
         item.name
-      }</button></li>`,
+      }</button>`,
     );
   }
 
