@@ -11,7 +11,7 @@ let dogs = (function(configSettings) {
 
   function showLoadingMessage() {
     $("body").append(
-      '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>',
+      '<div class="spinner-border text-primary" role="status"><span class="sr-only">Loading...</span></div>'
     );
   }
 
@@ -42,11 +42,11 @@ let dogs = (function(configSettings) {
         $("body").append(
           `<div class="loading-error"><p>oh no!!!!!</p><p>${error &&
             error.responseJON &&
-            error.responseJSON.detail}</p></div>`,
+            error.responseJSON.detail}</p></div>`
         );
         Cookies.remove("token");
         removeLoadingMessage();
-      },
+      }
     });
   }
 
@@ -84,7 +84,7 @@ let dogs = (function(configSettings) {
           $("body").append(
             `<div class="loading-error"><p>oh no!!</p><p>${
               error.statusText
-            }</p></div>`,
+            }</p></div>`
           );
           // remove old token
           Cookies.remove("token");
@@ -93,7 +93,7 @@ let dogs = (function(configSettings) {
 
         complete: function() {
           removeLoadingMessage();
-        },
+        }
       });
     });
   }
@@ -108,7 +108,7 @@ let dogs = (function(configSettings) {
     // Clear out title before adding anything again
     $modalHeader.find(".modal-header__title").remove();
     $modalHeader.prepend(
-      `<h4 class="class="modal-header__title text-center">${item.name}</h4>`,
+      `<h4 class="modal-header__title text-center">${item.name}</h4>`
     );
 
     // modal body
@@ -120,7 +120,7 @@ let dogs = (function(configSettings) {
       $modalBody.append(
         `<img class="rounded mx-auto d-block p-3" src="${
           item.photos[0].medium
-        }" alt="${item.name}" />`,
+        }" alt="${item.name}" />`
       );
     }
     if (item.description) {
@@ -130,7 +130,7 @@ let dogs = (function(configSettings) {
     $modalBody.append(
       `<a class="text-align" href="${item.url}">Find out more about ${
         item.name
-      } here!</a>`,
+      } here!</a>`
     );
   }
 
@@ -139,18 +139,18 @@ let dogs = (function(configSettings) {
       `<button data-toggle="modal" data-name="${index}"
       data-target="#dog-${index}" class="list-item-group m-3 btn btn-primary">${
         item.name
-      }</button>`,
+      }</button>`
     );
   }
 
   return {
-    loadDogs: loadDogs,
+    loadDogs: loadDogs
   };
 })(configSettings);
 
 if (!configSettings) {
   $("body").append(
-    `<div class="loading-error"><p>oh no!!</p><p>Sorry, you do not have access to this API!</p></div>`,
+    `<div class="loading-error"><p>oh no!!</p><p>Sorry, you do not have access to this API!</p></div>`
   );
 } else {
   dogs.loadDogs();
