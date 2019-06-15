@@ -37,7 +37,7 @@ let dogs = (function(configSettings) {
         return token;
       },
       error: error => {
-        console.error(error);
+        console.error(error); // eslint-disable-line no-console
         $("body").append(
           `<div class="loading-error"><p>oh no!!!!!</p><p>${error &&
             error.responseJON &&
@@ -79,7 +79,7 @@ let dogs = (function(configSettings) {
           });
         },
         error: error => {
-          console.error(error);
+          console.error(error); // eslint-disable-line no-console
           $("body").append(
             `<div class="loading-error"><p>oh no!!</p><p>${
               error.statusText

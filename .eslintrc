@@ -9,6 +9,6 @@
   },
   "extends": ["eslint:recommended"],
   "rules": {
-    "no-console": [{ "allow": ["warn", "error"] }]
+    "no-console": 1
   }
 }
