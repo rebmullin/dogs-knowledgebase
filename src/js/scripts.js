@@ -1,10 +1,9 @@
 let configSettings = window.config || null;
+const DOG_IMAGE_PLACEHOLDER = "https://placedog.net/300/190?random";
 
 let dogs = (function(configSettings) {
-  const clientId = Boolean(configSettings) ? configSettings.CLIENT_ID : null;
-  const clientSecret = Boolean(configSettings)
-    ? configSettings.CLIENT_SECRET
-    : null;
+  const clientId = configSettings ? configSettings.CLIENT_ID : null;
+  const clientSecret = configSettings ? configSettings.CLIENT_SECRET : null;
 
   const apiUrl = "https://api.petfinder.com/v2/animals?breed=Bichon Frise";
   const tokenUrl = "https://api.petfinder.com/v2/oauth2/token";
@@ -74,7 +73,7 @@ let dogs = (function(configSettings) {
             addDogItem(animal, index);
           });
 
-          $(".list-item-group").on("click", function(e) {
+          $(".list-item-group").on("click", function() {
             const index = $(this).data("name");
             showModal(animals[index], index);
           });
@@ -116,13 +115,19 @@ let dogs = (function(configSettings) {
     // Clear out body before adding anything again
     $modalBody.empty();
 
-    if (item.photos.length) {
-      $modalBody.append(
-        `<img class="rounded mx-auto d-block p-3" src="${
-          item.photos[0].medium
-        }" alt="${item.name}" />`
-      );
-    }
+    const dogImage = item.photos.length
+      ? item.photos[0].medium
+      : DOG_IMAGE_PLACEHOLDER;
+
+    const imageClassName =
+      dogImage === DOG_IMAGE_PLACEHOLDER ? "placeholder" : "";
+
+    $modalBody.append(
+      `<span class="d-flex mx-auto m-3 ${imageClassName}"><img class="rounded d-block mx-auto" src="${dogImage}" alt="${
+        item.name
+      }" /></span>`
+    );
+
     if (item.description) {
       $modalBody.append(`<p>${item.description}</p>`);
     }
